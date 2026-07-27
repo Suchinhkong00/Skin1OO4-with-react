@@ -1,0 +1,851 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
+
+html {
+    color-scheme: light;
+}
+/* 1. DESIGN TOKENS  (CSS custom properties) */
+:root {
+  /* Brand palette */
+  --clr-primary:    #4a7c59;
+  --clr-primary-d:  #3a6147;
+  --clr-primary-l:  #d4e8da;
+  --clr-accent:     #c8956c;
+
+  /* Backgrounds */
+  --clr-bg:         #fdf9f5;
+  --clr-bg2:        #f5ede3;
+
+  /* Text */
+  --clr-text:       #2d2d2d;
+  --clr-text-m:     #666;
+
+  /* Borders */
+  --clr-border:     #e8ddd4;
+
+  /* Bootstrap overrides */
+  --bs-body-font-family: 'Poppins', sans-serif;
+  --bs-body-bg:          var(--clr-bg);
+  --bs-body-color:       var(--clr-text);
+
+   color-scheme: light;
+}
+
+
+/*2. GLOBAL RESET & BASE */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--clr-bg) !important;
+    color: var(--clr-text) !important;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; }
+a   { text-decoration: none; }
+
+
+/* 3. BOOTSTRAP COLOUR OVERRIDES */
+.btn-primary,
+.bg-primary {
+  background-color: var(--clr-primary)   !important;
+  border-color:     var(--clr-primary)   !important;
+}
+.btn-primary:hover {
+  background-color: var(--clr-primary-d) !important;
+  border-color:     var(--clr-primary-d) !important;
+}
+.btn-outline-primary {
+  color:        var(--clr-primary) !important;
+  border-color: var(--clr-primary) !important;
+}
+
+.text-primary   { color:        var(--clr-primary) !important; }
+.bg-beige       { background:   var(--clr-bg2)     !important; }
+.bg-green       { background:   var(--clr-primary)  !important; }
+
+   /* 4. TYPOGRAPHY HELPERS */
+
+.accent { color: var(--clr-primary); }
+
+/* Small pill label above section headings */
+.section-tag {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--clr-primary);
+  background: var(--clr-primary-l);
+  padding: 4px 14px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+
+/*5. NAVBAR*/
+.navbar {
+  background: #fff !important;
+  box-shadow: 0 2px 12px rgba(74, 124, 89, .10);
+}
+.navbar-brand .logo-text {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--clr-text);
+}
+.navbar-brand .logo-text .accent { color: var(--clr-primary); }
+.logo-img { height: 38px; width: auto; }
+
+.nav-link {
+  font-weight: 500;
+  color: var(--clr-text) !important;
+  font-size: .93rem;
+  transition: color .2s;
+}
+.nav-link:hover,
+.nav-link.active { color: var(--clr-primary) !important; }
+
+
+/*6. PAGE BANNER  (inner pages)*/
+.page-banner {
+  background: linear-gradient(135deg, var(--clr-primary) 0%, var(--clr-primary-d) 100%);
+  color: #fff;
+  padding: 80px 0 52px;
+  text-align: center;
+  margin-top: 56px;
+}
+.page-banner h1 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+}
+.page-banner p {
+  opacity: .85;
+  font-size: 1rem;
+  margin-top: 8px;
+}
+.page-banner .breadcrumb {
+  justify-content: center;
+  background: transparent;
+  padding: 0;
+  margin-top: 16px;
+}
+.page-banner .breadcrumb-item,
+.page-banner .breadcrumb-item a        { color: rgba(255, 255, 255, .75); font-size: .82rem; }
+.page-banner .breadcrumb-item.active   { color: #fff; }
+.page-banner .breadcrumb-item + .breadcrumb-item::before { color: rgba(255, 255, 255, .5); }
+
+
+/* 7. HERO SECTION  — Hero centered layout */
+.hero-section {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;       
+  justify-content: center;  
+  overflow: hidden;
+  margin-top: 56px;    
+
+  
+
+}
+
+/* Full-bleed background image */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  
+}
+
+/* Dark gradient overlay */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(30, 50, 36, .72) 0%, rgba(30, 50, 36, .35) 100%);
+}
+
+/* Content layer — centered horizontally & vertically */
+.hero-content {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  padding: 60px 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;        
+}
+
+.hero-eyebrow {
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  opacity: .8;
+  margin-bottom: 12px;
+}
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.18;
+}
+.hero-title em {
+  font-style: italic;
+  color: #a8d5b5;
+}
+.hero-sub {
+  font-size: 1.05rem;
+  opacity: .85;
+  max-width: 540px;
+  margin-top: 16px;
+  line-height: 1.7;
+  text-align: center;
+  margin-left: auto;  
+  margin-right: auto;  
+}
+
+/* Hero button group — centered */
+.hero-content .btn-group-hero,
+.hero-content .d-flex {
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+
+/* 8. STATS STRIP */
+.stat-card {
+  text-align: center;
+  color: #fff;
+  padding: 28px 16px;
+}
+.stat-num {
+  display: block;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+}
+.stat-label {
+  display: block;
+  font-size: .85rem;
+  opacity: .8;
+  margin-top: 4px;
+}
+
+
+/* 9. FEATURE CARDS*/
+.feature-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 28px;
+  box-shadow: 0 4px 20px rgba(74, 124, 89, .08);
+  transition: transform .25s, box-shadow .25s;
+  height: 100%;
+}
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 32px rgba(74, 124, 89, .16);
+}
+.feature-card i  { font-size: 2rem; color: var(--clr-primary); margin-bottom: 14px; }
+.feature-card h5 { font-weight: 700; margin-bottom: 8px; }
+
+
+/* 10. PRODUCT CARDS */
+.product-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(74, 124, 89, .08);
+  transition: transform .25s, box-shadow .25s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 36px rgba(74, 124, 89, .16);
+}
+
+/* Square image wrapper */
+.product-img-wrap {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+.product-img-wrap img {
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  padding:20px;
+}
+.product-card:hover .product-img-wrap img {
+  transform: scale(1.03);
+}
+/* Badge overlaid on product image */
+.product-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--clr-primary);
+  color: #fff;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.product-badge.new { background: var(--clr-accent); }
+
+/* Card body */
+.product-body {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.product-name { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+.product-desc { font-size: .88rem; color: var(--clr-text-m); flex: 1; line-height: 1.6; }
+.product-tag {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: .7rem;
+  font-weight: 600;
+  background: var(--clr-primary-l);
+  color: var(--clr-primary);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+
+/*  11. WHY CHOOSE US  CARDS */
+
+
+.why-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 28px;
+  box-shadow: 0 4px 20px rgba(74, 124, 89, .08);
+  transition: transform .25s, box-shadow .25s;
+  height: 100%;
+}
+.why-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 32px rgba(74, 124, 89, .16);
+}
+.why-card h5 { font-weight: 700; margin: 16px 0 10px; }
+
+/* Coloured icon wrappers */
+.why-icon-wrap i { font-size: 1.6rem; color: var(--clr-primary); }
+
+.why-icon-wrap--peach i { color: var(--clr-accent); }
+
+.why-icon-wrap--blue i { color: #3a6fc4; }
+
+.why-icon-wrap--teal i { color: #2a9d8f; }
+
+.why-icon-wrap--gold   { background: #fef3cd; }
+.why-icon-wrap--gold i { color: #d4a017; }
+
+/* Pill tag inside why-card */
+.why-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--clr-primary);
+  background: var(--clr-primary-l);
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+
+/*12. BENEFIT CARDS */
+
+.benefit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 32px rgba(74, 124, 89, .16);
+}
+.benefit-card .benefit-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: var(--clr-primary-l);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+.benefit-card .benefit-icon i { font-size: 1.6rem; color: var(--clr-primary); }
+.benefit-card h5 { font-weight: 700; margin-bottom: 8px; }
+
+
+/*13. TESTIMONIAL CARDS */
+.testimonial-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(74, 124, 89, .08);
+  height: 100%;
+}
+.testimonial-text {
+  font-size: .92rem;
+  color: var(--clr-text-m);
+  line-height: 1.7;
+  font-style: italic;
+  margin-bottom: 0;
+}
+.testimonial-author {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Initials avatar */
+.author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--clr-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: .95rem;
+  flex-shrink: 0;
+}
+.author-name     { font-weight: 700; font-size: .88rem; }
+.author-location { font-size: .78rem; color: var(--clr-text-m); }
+
+
+/* 14. CTA BANNER*/
+.cta-box {
+  background: linear-gradient(135deg, var(--clr-primary) 0%, var(--clr-primary-d) 100%);
+  border-radius: 24px;
+  padding: 64px 48px;
+  text-align: center;
+  color: #fff;
+}
+.cta-box h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; }
+.cta-box p  { opacity: .85; margin: 12px 0 28px; }
+
+
+/* 15. ABOUT SECTION */
+.about-img-wrap { position: relative; }
+.about-img {
+  width: 100%;
+  border-radius: 20px;
+  object-fit: cover;
+  max-height: 480px;
+}
+.about-badge {
+  position: absolute;
+  bottom: -20px;
+  right: -12px;
+  background: var(--clr-accent);
+  color: #fff;
+  border-radius: 16px;
+  padding: 16px 24px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(200, 149, 108, .35);
+}
+.badge-num   { display: block; font-size: 2rem; font-weight: 800; line-height: 1; }
+.badge-label { font-size: .75rem; font-weight: 500; opacity: .9; }
+
+
+/*16. MISSION / VISION CARDS */
+.mv-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 28px;
+  box-shadow: 0 4px 20px rgba(74, 124, 89, .08);
+}
+.mv-card h4 { color: var(--clr-primary); }
+
+
+/* 17. ROUTINE STEPS */
+.routine-step {
+  text-align: center;
+  background: #fff;
+  border-radius: 16px;
+  padding: 36px 20px;
+  box-shadow: 0 4px 16px rgba(74, 124, 89, .07);
+  position: relative;
+  height: 100%;
+}
+.step-num {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--clr-primary);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 800;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.routine-step i  { font-size: 2rem; color: var(--clr-primary); display: block; margin-bottom: 12px; }
+.routine-step h5 { font-weight: 700; margin-bottom: 6px; }
+
+
+/*18. FAQ ACCORDION*/
+
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 18px 20px;
+  font-weight: 600;
+  font-size: .95rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--clr-text);
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item:hover {
+  border-color: var(--clr-primary-l);
+  box-shadow: 0 4px 18px rgba(74, 124, 89, .07);
+}
+
+.faq-item summary .icon {
+  transition: transform .3s;
+  color: var(--clr-primary);
+  font-size: 1.2rem;
+}
+.faq-item[open] summary .icon    { transform: rotate(45deg); }
+.faq-item[open] .faq-content     { animation: fadeIn .25s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* 19. CONTACT FORM &  */
+.contact-form .form-control,
+.contact-form select.form-control {
+  border-radius: 10px;
+  border-color: var(--clr-border);
+  padding: 12px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: .93rem;
+  background: #fff;
+  appearance: auto;
+}
+.contact-form .form-control:focus {
+  border-color: var(--clr-primary);
+  box-shadow: 0 0 0 3px rgba(74, 124, 89, .15);
+}
+.contact-form label {
+  font-weight: 600;
+  font-size: .88rem;
+  margin-bottom: 6px;
+}
+.req { color: var(--clr-accent); }
+
+/* Contact info cards */
+.info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(74, 124, 89, .07);
+  margin-bottom: 14px;
+  transition: box-shadow .2s;
+}
+.info-card:hover { box-shadow: 0 6px 24px rgba(74, 124, 89, .13); }
+.info-card i   { font-size: 1.5rem; color: var(--clr-primary); flex-shrink: 0; margin-top: 2px; }
+.info-card h5  { font-size: .88rem; font-weight: 700; margin-bottom: 2px; }
+.info-card a,
+.info-card p   { font-size: .88rem; color: var(--clr-text-m); margin: 0; }
+.info-card a:hover { color: var(--clr-primary); }
+
+/* Embedded map thumbnail */
+.map-wrap { position: relative; border-radius: 16px; overflow: hidden; }
+.map-img  { width: 100%; height: 220px; object-fit: cover; display: block; }
+.map-label {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(255, 255, 255, .92);
+  backdrop-filter: blur(6px);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: .8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--clr-primary);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
+}
+
+/* Form feedback messages */
+.form-msg         { font-size: .9rem; font-weight: 600; }
+.form-msg.success { color: var(--clr-primary); }
+.form-msg.error   { color: #dc3545; }
+
+
+   /* 20. FOOTER */
+.footer {
+  background: #1a2d22;
+  color: rgba(255, 255, 255, .8);
+  padding: 64px 0 0;
+}
+.footer h6 {
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: .04em;
+}
+.footer ul          { padding: 0; list-style: none; }
+.footer ul li       { margin-bottom: 8px; }
+.footer ul li a     { color: rgba(255, 255, 255, .65); font-size: .88rem; transition: color .2s; }
+.footer ul li a:hover { color: #fff; }
+.footer p           { font-size: .88rem; color: rgba(255, 255, 255, .65); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  padding: 20px 0;
+  margin-top: 48px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: .82rem;
+  color: rgba(255, 255, 255, .5);
+}
+
+/* Footer logo variant */
+.logo-text.large        { font-size: 1.6rem; font-weight: 800; color: #fff; letter-spacing: -.01em; }
+.logo-text.large .accent { color: #a8d5b5; }
+
+/* Social icon row */
+.social-icons        { display: flex; gap: 10px; margin-top: 16px; }
+.social-icons a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .1);
+  color: rgba(255, 255, 255, .75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: background .2s, color .2s;
+}
+.social-icons a:hover { background: var(--clr-primary); color: #fff; }
+
+/* Developer credit */
+.developer-credit { margin-top: 5px; font-size: 0.9rem; }
+
+
+   /*BACK-TO-TOP BUTTON */
+.back-to-top {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 999;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--clr-primary);
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s, transform .2s;
+  box-shadow: 0 4px 16px rgba(74, 124, 89, .4);
+}
+.back-to-top.visible { opacity: 1; pointer-events: auto; }
+.back-to-top:hover   { transform: translateY(-2px); }
+
+
+   /* 22. RESPONSIVE BREAKPOINTS  — Improved responsiveness
+   Breakpoints:
+     Desktop     1200px+
+     Laptop      992px – 1199px
+     Tablet      768px – 991px
+     Mobile      481px – 767px
+     Small mobile ≤ 480px */
+
+/* ── Desktop (1200px+) ── */
+@media (min-width: 1200px) {
+  .hero-title { font-size: 3.6rem; }
+  .hero-sub   { max-width: 560px; }
+  .cta-box    { padding: 80px 64px; }
+
+ 
+}
+
+/* ── Laptop (992px – 1199px) ── */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .hero-title  { font-size: 3rem; }
+  .cta-box     { padding: 64px 48px; }
+  .feature-card,
+  .why-card,
+  .benefit-card { padding: 28px 22px; }
+  .hero-bg img {
+    object-position: 70% center;
+  }
+
+}
+
+/* ── Tablet (768px – 991px) ── */
+@media (min-width: 768px) and (max-width: 991px) {
+  .hero-section  { min-height: 90vh; }
+  .hero-title    { font-size: 2.4rem; }
+  .hero-sub      { font-size: .95rem; max-width: 420px; }
+  .hero-content  { padding: 50px 0; }
+
+  .cta-box       { padding: 48px 32px; }
+  .about-badge   { right: 0; bottom: -16px; padding: 12px 18px; }
+
+  .product-card,
+  .feature-card,
+  .why-card,
+  .benefit-card { margin-bottom: 20px; }
+
+  .footer        { padding: 48px 0 0; }
+  .footer-bottom { flex-direction: column; align-items: center; text-align: center; }
+  .hero-bg img {
+    object-position: 70% center;
+  }
+}
+
+/* ── Mobile (481px – 767px)  — Hero centered layout ── */
+@media (min-width: 481px) and (max-width: 767px) {
+  .hero-section {
+    min-height: 100vh;
+    padding: 100px 0 60px;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-content {
+    text-align: center;
+    padding: 20px 16px;
+    align-items: center;
+  }
+  
+  .hero-title { font-size: 2rem; line-height: 1.2; }
+  .hero-sub   { font-size: .92rem; max-width: 100%; }
+  .hero-overlay { background: rgba(30, 50, 36, .70); }
+  .hero-content .d-flex { justify-content: center; flex-wrap: wrap; gap: 10px; }
+
+  .cta-box { padding: 40px 24px; border-radius: 16px; }
+
+  .about-badge { right: 0; bottom: -12px; padding: 10px 16px; }
+  .about-img   { max-height: 360px; }
+
+  .stat-card   { padding: 20px 12px; }
+
+  .footer        { padding: 40px 0 0; }
+  .footer-bottom { flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+
+  .back-to-top { bottom: 20px; right: 16px; width: 40px; height: 40px; font-size: 1rem; }
+  .hero-bg img {
+    object-position: 70% center;
+  }
+}
+
+/* ── Small Mobile (≤ 480px)  */
+@media (max-width: 480px) {
+  .hero-section {
+    min-height: 100vh;
+    padding: 90px 0 60px;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-content {
+    text-align: center;
+    padding: 16px 12px;
+    align-items: center;
+  }
+ .hero-bg img {
+    object-position:  70% center ;
+  }
+  
+  .hero-title   { font-size: 1.7rem; line-height: 1.2; }
+  .hero-eyebrow { font-size: .7rem; }
+  .hero-sub     { font-size: .88rem; max-width: 100%; margin-top: 12px; }
+  .hero-overlay { background: rgba(30, 50, 36, .72); }
+  .hero-content .d-flex { justify-content: center; flex-direction: column; align-items: center; gap: 10px; }
+  .hero-content .btn    { width: 100%; max-width: 240px; }
+
+  .page-banner  { padding: 60px 0 36px; margin-top: 56px; }
+  .page-banner h1 { font-size: 1.6rem; }
+
+  .cta-box      { padding: 32px 16px; border-radius: 14px; }
+  .cta-box h2   { font-size: 1.4rem; }
+
+  .feature-card,
+  .why-card,
+  .benefit-card {
+    padding:24px 18px;
+    border-radius:12px;
+  }
+
+  .product-card {
+    border-radius:12px;
+  }
+  .product-body  { padding: 16px; }
+
+  .testimonial-card { padding: 20px; }
+
+  .faq-item summary { font-size: .88rem; padding: 14px 16px; }
+  .faq-content      { padding: 0 16px 14px; font-size: .88rem; }
+
+  .about-badge  { position: static; margin-top: 16px; display: inline-block; }
+  .about-img    { max-height: 280px; }
+
+  .section-tag  { font-size: .68rem; }
+
+  .stat-card    { padding: 16px 8px; }
+  .stat-num     { font-size: 2rem; }
+
+  .footer         { padding: 32px 0 0; }
+  .footer-bottom  { flex-direction: column; align-items: center; text-align: center; gap: 4px; font-size: .78rem; }
+  .social-icons   { justify-content: center; }
+
+  .back-to-top { bottom: 16px; right: 12px; width: 38px; height: 38px; font-size: .95rem; }
+
+  .info-card    { padding: 16px; }
+  .map-img      { height: 180px; }
+
+  .routine-step { padding: 28px 14px; }
+
+    /* Section spacing helper */
+
+  .section-padding {
+    padding:80px 0;
+  }
+
+
+  @media(max-width:480px){
+
+    .section-padding {
+      padding:50px 0;
+    }
+
+  }
+}

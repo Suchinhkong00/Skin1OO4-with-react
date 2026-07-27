@@ -1,0 +1,74 @@
+import { createContext, useContext, useEffect, useState } from "react";
+import {
+  collection,
+  onSnapshot,
+  addDoc,
+  doc,
+  updateDoc,
+  deleteDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+import { db } from "../firebase/config";
+import { seedProducts } from "../data/seedProducts";
+
+const ProductsContext = createContext(null);
+
+export function ProductsProvider({ children }) {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [usingFallback, setUsingFallback] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "products"),
+      (snapshot) => {
+        if (snapshot.empty) {
+          // Firestore reachable but not seeded yet — show local data so the
+          // storefront isn't empty (run `npm run seed` to populate Firestore).
+          setProducts(seedProducts);
+          setUsingFallback(true);
+        } else {
+          setProducts(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
+          setUsingFallback(false);
+        }
+        setLoading(false);
+      },
+      () => {
+        setProducts(seedProducts);
+        setUsingFallback(true);
+        setLoading(false);
+      }
+    );
+    return unsubscribe;
+  }, []);
+
+  async function createProduct(product) {
+    await addDoc(collection(db, "products"), {
+      ...product,
+      price: Number(product.price),
+      createdAt: serverTimestamp(),
+    });
+  }
+
+  async function updateProduct(id, updates) {
+    await updateDoc(doc(db, "products", id), {
+      ...updates,
+      price: Number(updates.price),
+      updatedAt: serverTimestamp(),
+    });
+  }
+
+  async function deleteProduct(id) {
+    await deleteDoc(doc(db, "products", id));
+  }
+
+  const value = { products, loading, usingFallback, createProduct, updateProduct, deleteProduct };
+
+  return <ProductsContext.Provider value={value}>{children}</ProductsContext.Provider>;
+}
+
+export function useProducts() {
+  const ctx = useContext(ProductsContext);
+  if (!ctx) throw new Error("useProducts must be used within ProductsProvider");
+  return ctx;
+}

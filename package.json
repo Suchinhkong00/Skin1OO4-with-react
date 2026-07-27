@@ -1,0 +1,25 @@
+{
+  "name": "skin1004-react",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "seed": "node scripts/seedProducts.js"
+  },
+  "dependencies": {
+    "firebase": "^12.16.0",
+    "firebase-admin": "^10.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.24.0",
+    "react-toastify": "^10.0.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "dotenv": "^16.4.5",
+    "vite": "^8.1.5"
+  }
+}

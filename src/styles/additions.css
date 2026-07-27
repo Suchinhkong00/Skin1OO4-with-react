@@ -1,0 +1,322 @@
+/* ============================================================
+   ADDITIONS.CSS
+   New component styles required by React-only features
+   (cart page, auth pages, admin dashboard, loading/empty states).
+   Uses the same design tokens defined in legacy.css — no new palette.
+   ============================================================ */
+
+/* ---- Cart page (classes referenced by cart.html but never defined
+   in the original stylesheet — this fixes that gap) ---- */
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(74, 124, 89, .07);
+  margin-bottom: 14px;
+}
+.cart-item-img {
+  width: 84px;
+  height: 84px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.cart-item-body { flex: 1; }
+.cart-item-body h5 { font-weight: 700; margin-bottom: 4px; font-size: .95rem; }
+.cart-item-total {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--clr-primary);
+}
+.qty-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--clr-bg2);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+.qty-control button {
+  border: none;
+  background: #fff;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-weight: 700;
+  color: var(--clr-primary);
+  cursor: pointer;
+}
+.remove-btn {
+  border: none;
+  background: none;
+  color: #dc3545;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.cart-summary {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(74, 124, 89, .08);
+  position: sticky;
+  top: 90px;
+}
+
+/* Cart icon + badge in the navbar */
+.nav-cart-link { position: relative; display: inline-flex; align-items: center; }
+.nav-cart-link i { font-size: 1.25rem; }
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: var(--clr-accent);
+  color: #fff;
+  font-size: .65rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
+
+/* ---- Auth pages (Login / Register / Forgot Password) ---- */
+.auth-section { margin-top: 56px; }
+.auth-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px 36px;
+  box-shadow: 0 4px 24px rgba(74, 124, 89, .1);
+}
+
+/* ---- Search + filter bar (Products page & Admin Dashboard) ---- */
+.search-input-wrap { position: relative; }
+.search-input-wrap i {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--clr-text-m);
+}
+.search-input-wrap input { padding-left: 42px; }
+
+/* ---- Empty states (empty cart, no search results) ---- */
+.empty-state i { font-size: 3rem; color: var(--clr-primary); opacity: .5; }
+
+/* ---- Loader ---- */
+.loader-wrap { text-align: center; padding: 60px 20px; }
+.spinner {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 14px;
+  border: 4px solid var(--clr-primary-l);
+  border-top-color: var(--clr-primary);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loader-label { color: var(--clr-text-m); font-size: .9rem; }
+
+/* ---- Error / 404 pages ---- */
+.error-page { min-height: 60vh; display: flex; align-items: center; justify-content: center; margin-top: 56px; }
+
+/* ---- Admin Dashboard ---- */
+.admin-dashboard { margin-top: 56px; }
+.admin-table-wrap {
+  background: #fff;
+  border-radius: 16px;
+  padding: 8px;
+  box-shadow: 0 4px 20px rgba(74, 124, 89, .08);
+}
+.admin-table th { color: var(--clr-text-m); font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
+.admin-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 8px; }
+
+.admin-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 45, 34, .55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1050;
+}
+.admin-modal {
+  background: #fff;
+  border-radius: 18px;
+  padding: 32px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* ---- Pagination (SKIN1004 custom style) ---- */
+
+.custom-pagination {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+
+  margin-top: 40px;
+  margin-bottom: 40px;
+
+}
+
+
+.pagination-btn {
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  border: 1px solid var(--clr-border);
+
+  background: #fff;
+
+  color: var(--clr-text);
+
+  font-family: 'Poppins', sans-serif;
+
+  font-size: .9rem;
+  font-weight: 500;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+
+  transition: all .25s ease;
+
+}
+
+
+.pagination-btn:hover {
+
+  color: var(--clr-primary);
+
+  border-color: var(--clr-primary);
+
+}
+
+
+.pagination-btn.active {
+
+  background: var(--clr-primary);
+
+  color: #fff;
+
+  border-color: var(--clr-primary);
+
+}
+
+
+.pagination-btn:disabled {
+
+  opacity: .35;
+
+  cursor: not-allowed;
+
+}
+
+
+.pagination-btn.arrow {
+
+  font-size: 1.4rem;
+
+}
+/* ---- Nav account dropdown toggle: match nav-link exactly instead of
+   inheriting Bootstrap's default button padding/border ---- */
+.nav-account-toggle {
+  background: none;
+  border: none;
+  padding: .5rem 1rem;
+  line-height: inherit;
+}
+
+/* ============================================================
+   RESPONSIVE FIXES — Tablet (≤991px) and Mobile (≤767px)
+   Mirrors the breakpoints already used in legacy.css.
+   ============================================================ */
+
+/* Tablet & below: cart summary no longer sits beside the cart items
+   (Bootstrap stacks col-lg-8/col-lg-4 to full width), so "sticky" caused it
+   to float oddly over content while scrolling instead of acting as a sidebar. */
+@media (max-width: 991px) {
+  .cart-summary { position: static; top: auto; }
+
+  /* Admin table: Category is the least essential column on a narrow screen —
+     drop it instead of forcing horizontal scroll on the whole table. */
+  .admin-table .admin-col-category { display: none; }
+}
+
+@media (max-width: 767px) {
+  .auth-card { padding: 32px 22px; border-radius: 16px; }
+  .admin-modal { padding: 24px 18px; border-radius: 14px; }
+
+  /* Admin dashboard header: let the button take full width instead of
+     shrinking awkwardly next to the heading on narrow screens. */
+  .admin-dashboard .btn-add-product { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  /* Cart line item: image + name + qty + price in one row got cramped under
+     ~480px. Stack it into two rows: media row, then controls/total row. */
+  .cart-item {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .cart-item-body { flex-basis: calc(100% - 94px); }
+  .cart-item-total {
+    flex-basis: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+    border-top: 1px solid var(--clr-border);
+  }
+  @media (max-width: 480px) {
+
+  .custom-pagination {
+
+    gap: 8px;
+
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+  }
+
+
+  .pagination-btn {
+
+    width: 34px;
+    height: 34px;
+
+    font-size: .85rem;
+
+  }
+
+
+  .pagination-btn.arrow {
+
+    font-size: 1.2rem;
+
+  }
+
+}
+
+  .auth-card { padding: 26px 16px; }
+
+}
