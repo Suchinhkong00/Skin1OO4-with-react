@@ -182,10 +182,10 @@ export default function Contact() {
                   target="_blank" rel="noopener noreferrer"
                 >
                  <img
-                    src={`${import.meta.env.BASE_URL}images/map.png`}
-                    alt="Map"
-                    className="map-img"
-                  />
+                  src={`${import.meta.env.BASE_URL}images/map.png`}
+                  alt="Map"
+                  className="map-img"
+                />
                 </a>
                 <div className="map-label">
                   <i className="ri-map-pin-fill"></i> Phnom Penh, Cambodia
