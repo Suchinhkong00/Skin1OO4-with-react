@@ -181,7 +181,11 @@ export default function Contact() {
                   href="https://www.google.com/maps/place/SKINURI/@11.5611336,104.90133,17z/data=!4m6!3m5!1s0x310951c504fcf47f:0xc22e1509f41f8507!8m2!3d11.5611336!4d104.90133!16s%2Fg%2F11swt_fxfz"
                   target="_blank" rel="noopener noreferrer"
                 >
-                  <img src="/images/map.png" alt="SKIN1004 store location – Phnom Penh, Cambodia" className="map-img" />
+                 <img
+                    src={`${import.meta.env.BASE_URL}images/map.png`}
+                    alt="Map"
+                    className="map-img"
+                  />
                 </a>
                 <div className="map-label">
                   <i className="ri-map-pin-fill"></i> Phnom Penh, Cambodia
