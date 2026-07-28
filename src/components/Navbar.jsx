@@ -7,12 +7,13 @@ export default function Navbar() {
   const { currentUser, isAdmin, logout } = useAuth();
 
   const linkClass = ({ isActive }) => "nav-link" + (isActive ? " active" : "");
+  const logoSrc = `${import.meta.env.BASE_URL}images/Logo.png`;
 
   return (
     <nav className="navbar navbar-expand-lg fixed-top">
       <div className="container">
         <Link className="navbar-brand d-flex align-items-center gap-2" to="/">
-          <img src="/images/Logo.png" alt="SKIN1004 Logo" className="logo-img" onError={(e) => (e.target.style.display = "none")} />
+          <img src={logoSrc} alt="SKIN1004 Logo" className="logo-img" onError={(e) => (e.target.style.display = "none")} />
         </Link>
         <button
           className="navbar-toggler border-0"
@@ -51,6 +52,7 @@ export default function Navbar() {
                   {currentUser.displayName || "Account"}
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end">
+                  <li><NavLink className="dropdown-item" to="/orders">Order History</NavLink></li>
                   <li><button className="dropdown-item" onClick={logout}>Logout</button></li>
                 </ul>
               </li>

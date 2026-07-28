@@ -24,6 +24,10 @@ export default function ProductDetails() {
     );
   }
 
+  const imageSrc = /^https?:\/\//i.test(product.image)
+    ? product.image
+    : `${import.meta.env.BASE_URL}${product.image.replace(/^\/+/, "")}`;
+
   function handleAdd() {
     addToCart(product.id, 1);
     toast.success(`${product.name} added to cart`);
@@ -48,7 +52,7 @@ export default function ProductDetails() {
         <div className="row g-5 align-items-center mt-2">
           <div className="col-lg-6">
             <div className="product-img-wrap" style={{ borderRadius: "16px" }}>
-              <img src={product.image} alt={product.name} />
+              <img src={imageSrc} alt={product.name} />
               {product.badge && (
                 <span className={"product-badge" + (product.badge === "New" ? " new" : "")}>
                   {product.badge}

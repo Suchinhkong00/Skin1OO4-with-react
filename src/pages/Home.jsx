@@ -6,13 +6,14 @@ import Loader from "../components/Loader";
 export default function Home() {
   const { products, loading } = useProducts();
   const featured = products.slice(0, 3);
+  const heroImage = `${import.meta.env.BASE_URL}images/hero.png`;
 
   return (
     <>
       {/* HERO */}
       <section className="hero-section">
         <div className="hero-bg">
-          <img src="/images/hero.png" alt="SKIN1004 products" />
+          <img src={heroImage} alt="SKIN1004 products" />
           <div className="hero-overlay"></div>
         </div>
         <div className="container">

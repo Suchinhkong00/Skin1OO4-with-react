@@ -6,6 +6,7 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  writeBatch,
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../firebase/config";
@@ -24,7 +25,8 @@ export function ProductsProvider({ children }) {
       (snapshot) => {
         if (snapshot.empty) {
           // Firestore reachable but not seeded yet — show local data so the
-          // storefront isn't empty (run `npm run seed` to populate Firestore).
+          // storefront isn't empty (run `npm run seed`, or use the "Import
+          // Sample Products" button in the admin dashboard, to populate Firestore).
           setProducts(seedProducts);
           setUsingFallback(true);
         } else {
@@ -62,7 +64,32 @@ export function ProductsProvider({ children }) {
     await deleteDoc(doc(db, "products", id));
   }
 
-  const value = { products, loading, usingFallback, createProduct, updateProduct, deleteProduct };
+  // One-time import: writes the local seedProducts array into Firestore as
+  // real documents (with Firestore-assigned IDs), so the onSnapshot listener
+  // above picks them up and usingFallback flips back to false automatically.
+  async function seedFirestoreWithSampleProducts() {
+    const batch = writeBatch(db);
+    seedProducts.forEach((product) => {
+      const { id, ...rest } = product; // drop the local fallback id
+      const ref = doc(collection(db, "products"));
+      batch.set(ref, {
+        ...rest,
+        price: Number(rest.price),
+        createdAt: serverTimestamp(),
+      });
+    });
+    await batch.commit();
+  }
+
+  const value = {
+    products,
+    loading,
+    usingFallback,
+    createProduct,
+    updateProduct,
+    deleteProduct,
+    seedFirestoreWithSampleProducts,
+  };
 
   return <ProductsContext.Provider value={value}>{children}</ProductsContext.Provider>;
 }

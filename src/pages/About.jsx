@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 
 export default function About() {
+  const aboutImage = `${import.meta.env.BASE_URL}images/aboutSKIN1004.webp`;
+
   return (
     <>
       <div className="page-banner">
@@ -21,7 +23,7 @@ export default function About() {
           <div className="row g-4 g-lg-5 align-items-center">
             <div className="col-lg-6">
               <div className="about-img-wrap">
-                <img src="/images/aboutSKIN1004.webp" alt="About SKIN1004" className="about-img" />
+                <img src={aboutImage} alt="About SKIN1004" className="about-img" />
                 <div className="about-badge">
                   <span className="badge-num">8+</span>
                   <span className="badge-label">Years of Expertise</span>

@@ -1,23 +1,50 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { useAuth } from "./AuthContext";
 
-const CART_KEY = "skin1004_cart";
+const getCartKey = (uid) => `skin1004_cart_${uid}`;
 const CartContext = createContext(null);
 
-function readCart() {
+function readCart(uid) {
   try {
-    const raw = localStorage.getItem(CART_KEY);
+    const raw = localStorage.getItem(getCartKey(uid));
     return raw ? JSON.parse(raw) : [];
   } catch {
     return [];
   }
 }
 
+function writeCart(uid, cart) {
+  try {
+    localStorage.setItem(getCartKey(uid), JSON.stringify(cart));
+  } catch {
+    // localStorage may be unavailable (private mode, quota exceeded) — fail silently
+  }
+}
+
 export function CartProvider({ children }) {
-  const [cart, setCart] = useState(readCart);
+  const [cart, setCart] = useState([]);
+  const { currentUser } = useAuth();
+
+  // Tracks whose cart is currently loaded, so we don't accidentally
+  // write an empty array over a user's saved cart before it's loaded.
+  const loadedUidRef = useRef(null);
 
   useEffect(() => {
-    localStorage.setItem(CART_KEY, JSON.stringify(cart));
-  }, [cart]);
+    if (!currentUser) {
+      loadedUidRef.current = null;
+      setCart([]);
+      return;
+    }
+    setCart(readCart(currentUser.uid));
+    loadedUidRef.current = currentUser.uid;
+  }, [currentUser]);
+
+  // Persist to localStorage any time the cart changes, but only once
+  // we've confirmed which user's cart is currently loaded.
+  useEffect(() => {
+    if (!currentUser || loadedUidRef.current !== currentUser.uid) return;
+    writeCart(currentUser.uid, cart);
+  }, [cart, currentUser]);
 
   function addToCart(productId, qty = 1) {
     setCart((prev) => {

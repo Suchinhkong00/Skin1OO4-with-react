@@ -5,6 +5,10 @@ import { toast } from "react-toastify";
 export default function ProductCard({ product }) {
   const { addToCart } = useCart();
 
+  const imageSrc = /^https?:\/\//i.test(product.image)
+    ? product.image
+    : `${import.meta.env.BASE_URL}${product.image.replace(/^\/+/, "")}`;
+
   function handleAdd(e) {
     e.preventDefault();
     addToCart(product.id, 1);
@@ -15,7 +19,7 @@ export default function ProductCard({ product }) {
     <div className="col-sm-6 col-lg-4">
       <div className="product-card h-100">
         <Link to={`/products/${product.id}`} className="product-img-wrap d-block">
-          <img src={product.image} alt={product.name} />
+          <img src={imageSrc} alt={product.name} />
           {product.badge && (
             <span className={"product-badge" + (product.badge === "New" ? " new" : "")}>
               {product.badge}

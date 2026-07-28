@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useProducts } from "../context/ProductsContext";
 import Loader from "../components/Loader";
@@ -6,6 +6,7 @@ import Loader from "../components/Loader";
 export default function Cart() {
   const { cart, updateQty, removeFromCart, clearCart } = useCart();
   const { products, loading } = useProducts();
+  const navigate = useNavigate();
 
   if (loading) return <Loader label="Loading your cart…" />;
 
@@ -45,26 +46,31 @@ export default function Cart() {
           ) : (
             <div className="row g-4">
               <div className="col-lg-8">
-                {lines.map(({ product, qty }) => (
-                  <div className="cart-item" key={product.id}>
-                    <img src={product.image} alt={product.name} className="cart-item-img" />
-                    <div className="cart-item-body">
-                      <h5>{product.name}</h5>
-                      <p className="text-muted small mb-2">${product.price.toFixed(2)} each</p>
-                      <div className="qty-control">
-                        <button onClick={() => updateQty(product.id, qty - 1)} aria-label="Decrease quantity">−</button>
-                        <span>{qty}</span>
-                        <button onClick={() => updateQty(product.id, qty + 1)} aria-label="Increase quantity">+</button>
+                {lines.map(({ product, qty }) => {
+                  const imageSrc = /^https?:\/\//i.test(product.image)
+                    ? product.image
+                    : `${import.meta.env.BASE_URL}${product.image.replace(/^\/+/, "")}`;
+                  return (
+                    <div className="cart-item" key={product.id}>
+                      <img src={imageSrc} alt={product.name} className="cart-item-img" />
+                      <div className="cart-item-body">
+                        <h5>{product.name}</h5>
+                        <p className="text-muted small mb-2">${product.price.toFixed(2)} each</p>
+                        <div className="qty-control">
+                          <button onClick={() => updateQty(product.id, qty - 1)} aria-label="Decrease quantity">−</button>
+                          <span>{qty}</span>
+                          <button onClick={() => updateQty(product.id, qty + 1)} aria-label="Increase quantity">+</button>
+                        </div>
+                      </div>
+                      <div className="cart-item-total">
+                        <span>${(product.price * qty).toFixed(2)}</span>
+                        <button className="remove-btn" onClick={() => removeFromCart(product.id)} aria-label="Remove item">
+                          <i className="ri-delete-bin-line"></i>
+                        </button>
                       </div>
                     </div>
-                    <div className="cart-item-total">
-                      <span>${(product.price * qty).toFixed(2)}</span>
-                      <button className="remove-btn" onClick={() => removeFromCart(product.id)} aria-label="Remove item">
-                        <i className="ri-delete-bin-line"></i>
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
                 <button className="btn btn-outline-secondary btn-sm rounded-pill mt-3" onClick={clearCart}>
                   Clear Cart
                 </button>
@@ -86,7 +92,9 @@ export default function Cart() {
                     <span>Total</span>
                     <span>${subtotal.toFixed(2)}</span>
                   </div>
-                  <button className="btn btn-primary btn-lg w-100 rounded-pill">Checkout</button>
+                  <button className="btn btn-primary btn-lg w-100 rounded-pill" onClick={() => navigate("/checkout")}>
+                    Checkout
+                  </button>
                 </div>
               </div>
             </div>

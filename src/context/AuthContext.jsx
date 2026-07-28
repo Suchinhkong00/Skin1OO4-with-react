@@ -38,8 +38,6 @@ export function AuthProvider({ children }) {
   async function register(name, email, password) {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(cred.user, { displayName: name });
-    // First registered user becomes admin automatically for convenience in dev;
-    // change this logic (or edit the Firestore doc manually) for production.
     await setDoc(doc(db, "users", cred.user.uid), {
       name,
       email,

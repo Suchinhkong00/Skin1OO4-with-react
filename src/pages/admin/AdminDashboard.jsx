@@ -6,12 +6,13 @@ import Loader from "../../components/Loader";
 import ProductForm from "./ProductForm";
 
 export default function AdminDashboard() {
-  const { products, loading, deleteProduct } = useProducts();
+  const { products, loading, usingFallback, deleteProduct, seedFirestoreWithSampleProducts } = useProducts();
   const { currentUser } = useAuth();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
   const [editingProduct, setEditingProduct] = useState(null); // null = closed, {} = new, {...} = editing
   const [deletingId, setDeletingId] = useState(null);
+  const [seeding, setSeeding] = useState(false);
 
   const categories = useMemo(
     () => [...new Set(products.map((p) => p.category).filter(Boolean))],
@@ -40,6 +41,18 @@ export default function AdminDashboard() {
     }
   }
 
+  async function handleSeed() {
+    setSeeding(true);
+    try {
+      await seedFirestoreWithSampleProducts();
+      toast.success("Sample products imported to Firestore.");
+    } catch {
+      toast.error("Failed to import sample products.");
+    } finally {
+      setSeeding(false);
+    }
+  }
+
   return (
     <section className="py-5 admin-dashboard">
       <div className="container py-4">
@@ -49,11 +62,31 @@ export default function AdminDashboard() {
             <h2 className="fw-bold mt-2 mb-0">Product Dashboard</h2>
             <p className="text-muted mb-0">Signed in as {currentUser?.email}</p>
           </div>
-          <button className="btn btn-primary rounded-pill px-4" onClick={() => setEditingProduct({})}>
+          <button
+            className="btn btn-primary rounded-pill px-4"
+            onClick={() => setEditingProduct({})}
+            disabled={usingFallback}
+            title={usingFallback ? "Import sample products first, or add one manually — this still works." : undefined}
+          >
             <i className="ri-add-line me-1"></i> Add Product
           </button>
         </div>
 
+       {usingFallback && (
+        <div className="alert alert-warning d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+          <div>
+            <strong>No products in Firestore yet.</strong> You're viewing local sample data —
+            editing and deleting are disabled until real products exist in the database.
+          </div>
+          <button
+            className="btn btn-sm btn-outline-primary rounded-pill px-3"
+            onClick={handleSeed}
+            disabled={seeding}
+          >
+            {seeding ? "Importing…" : "Import Sample Products to Firestore"}
+          </button>
+        </div>
+      )}
         <div className="row g-3 mb-4 search-filter-bar">
           <div className="col-md-7">
             <div className="search-input-wrap">
@@ -87,26 +120,27 @@ export default function AdminDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((p) => (
-                  <tr key={p.id}>
-                    <td><img src={p.image} alt={p.name} className="admin-thumb" /></td>
-                    <td>{p.name}</td>
-                    <td>{p.category}</td>
-                    <td>${Number(p.price).toFixed(2)}</td>
-                    <td className="text-end">
-                      <button className="btn btn-sm btn-outline-primary rounded-pill me-2" onClick={() => setEditingProduct(p)}>
-                        Edit
-                      </button>
-                      <button
-                        className="btn btn-sm btn-outline-danger rounded-pill"
-                        onClick={() => handleDelete(p)}
-                        disabled={deletingId === p.id}
-                      >
-                        {deletingId === p.id ? "Deleting…" : "Delete"}
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {filtered.map((p) => {
+                  const imageSrc = /^https?:\/\//i.test(p.image)
+                    ? p.image
+                    : `${import.meta.env.BASE_URL}${p.image.replace(/^\/+/, "")}`;
+                  return (
+                    <tr key={p.id}>
+                      <td><img src={imageSrc} alt={p.name} className="admin-thumb" /></td>
+                      <td>{p.name}</td>
+                      <td>{p.category}</td>
+                      <td>${Number(p.price).toFixed(2)}</td>
+                      <td className="text-end">
+                        <button className="btn btn-sm btn-outline-primary rounded-pill me-2" onClick={() => setEditingProduct(p)} disabled={usingFallback} title={usingFallback ? "Import sample products first to enable editing." : undefined}>
+                          Edit
+                        </button>
+                        <button className="btn btn-sm btn-outline-danger rounded-pill" onClick={() => handleDelete(p)} disabled={usingFallback || deletingId === p.id} title={usingFallback ? "Import sample products first to enable deleting." : undefined}>
+                          {deletingId === p.id ? "Deleting…" : "Delete"}
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
                 {filtered.length === 0 && (
                   <tr>
                     <td colSpan={5} className="text-center text-muted py-4">No products match your search.</td>
