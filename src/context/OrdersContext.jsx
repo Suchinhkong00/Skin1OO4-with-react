@@ -36,7 +36,8 @@ export function OrdersProvider({ children }) {
         setOrders(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
         setLoading(false);
       },
-      () => {
+      (error) => {
+        console.error("Failed to load orders:", error);
         setOrders([]);
         setLoading(false);
       }

@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase/config";
 
 const initialForm = { name: "", email: "", phone: "", subject: "", message: "" };
+const mapUrl = "https://www.google.com/maps/search/?api=1&query=11.561119,104.901344";
 
 export default function Contact() {
   const [form, setForm] = useState(initialForm);
@@ -34,12 +37,14 @@ export default function Contact() {
 
     setSubmitting(true);
     try {
-      // Kept from the original vanilla-JS implementation: a mock endpoint.
-      // Swap this for a real backend (e.g. a Cloud Function) when ready.
-      await fetch("https://jsonplaceholder.typicode.com/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+      await addDoc(collection(db, "messages"), {
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        subject: form.subject || "General",
+        message: form.message.trim(),
+        status: "new",
+        createdAt: serverTimestamp(),
       });
       toast.success("Thank you! We'll get back to you within 1 business day.");
       setForm(initialForm);
@@ -143,7 +148,7 @@ export default function Contact() {
                 <i className="ri-phone-line"></i>
                 <div>
                   <h5>Phone</h5>
-                  <a href="tel:+85578877269">+855 78 877 269</a>
+                  <a href="tel:+85587786790">+855 87 786 790</a>
                 </div>
               </div>
 
@@ -167,25 +172,19 @@ export default function Contact() {
                 <i className="ri-map-pin-line"></i>
                 <div>
                   <h5>Location</h5>
-                  <a
-                    href="https://www.google.com/maps/place/SKINURI/@11.5611336,104.90133,17z/data=!4m6!3m5!1s0x310951c504fcf47f:0xc22e1509f41f8507!8m2!3d11.5611336!4d104.90133!16s%2Fg%2F11swt_fxfz"
-                    target="_blank" rel="noopener noreferrer"
-                  >
-                    #317 Mao Tse Toung Blvd (245), Phnom Penh, Cambodia
+                  <a href={mapUrl} target="_blank" rel="noopener noreferrer">
+                    317K Street 202, Sangkat Phsar Depou Ti Bei, Phnom Penh, Cambodia
                   </a>
                 </div>
               </div>
 
               <div className="map-wrap mt-2">
-                <a
-                  href="https://www.google.com/maps/place/SKINURI/@11.5611336,104.90133,17z/data=!4m6!3m5!1s0x310951c504fcf47f:0xc22e1509f41f8507!8m2!3d11.5611336!4d104.90133!16s%2Fg%2F11swt_fxfz"
-                  target="_blank" rel="noopener noreferrer"
-                >
-                 <img
-                  src={`${import.meta.env.BASE_URL}images/map.png`}
-                  alt="Map"
-                  className="map-img"
-                />
+                <a href={mapUrl} target="_blank" rel="noopener noreferrer">
+                  <img
+                    src={`${import.meta.env.BASE_URL}images/map.png`}
+                    alt="Map"
+                    className="map-img"
+                  />
                 </a>
                 <div className="map-label">
                   <i className="ri-map-pin-fill"></i> Phnom Penh, Cambodia

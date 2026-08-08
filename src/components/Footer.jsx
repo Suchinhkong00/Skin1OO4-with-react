@@ -1,7 +1,19 @@
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
+import { useProducts } from "../context/ProductsContext";
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const { products } = useProducts();
+
+  // Pulled from real product data — the exact same source Products.jsx uses
+  // to build its filter dropdown — so these links can never fall out of
+  // sync with whatever categories actually exist in Firestore.
+  const categories = useMemo(
+    () => [...new Set(products.map((p) => p.category).filter(Boolean))].slice(0, 6),
+    [products]
+  );
+
   return (
     <footer className="footer">
       <div className="container">
@@ -28,17 +40,20 @@ export default function Footer() {
           <div className="col-6 col-lg-2">
             <h6>Products</h6>
             <ul>
-              <li><Link to="/products">Cleanser</Link></li>
-              <li><Link to="/products">Toner</Link></li>
-              <li><Link to="/products">Serum</Link></li>
-              <li><Link to="/products">Moisturizer</Link></li>
-              <li><Link to="/products">Sunscreen</Link></li>
-              <li><Link to="/products">Clay Mask</Link></li>
+              {categories.length > 0 ? (
+                categories.map((cat) => (
+                  <li key={cat}>
+                    <Link to={`/products?category=${encodeURIComponent(cat)}`}>{cat}</Link>
+                  </li>
+                ))
+              ) : (
+                <li><Link to="/products">Shop All</Link></li>
+              )}
             </ul>
           </div>
           <div className="col-lg-4">
             <h6>Contact</h6>
-            <p><i className="ri-phone-line me-2"></i>+855 78 877 269</p>
+            <p><i className="ri-phone-line me-2"></i>+855 87 786 790</p>
             <p><i className="ri-mail-line me-2"></i>contact@skin1004.com</p>
             <p><i className="ri-map-pin-line me-2"></i>Phnom Penh, Cambodia</p>
             <p><i className="ri-time-line me-2"></i>Mon–Sat, 8 AM–6 PM</p>

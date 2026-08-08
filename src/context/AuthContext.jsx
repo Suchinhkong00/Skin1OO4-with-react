@@ -59,6 +59,17 @@ export function AuthProvider({ children }) {
     return sendPasswordResetEmail(auth, email);
   }
 
+  // Firebase's onAuthStateChanged only fires on sign-in/sign-out, not on
+  // profile edits (e.g. updateProfile changing displayName). After updating
+  // a profile elsewhere (like the Profile page), call this to reload the
+  // current user from Firebase and push the fresh data into state, so
+  // anything reading currentUser (like the Navbar) re-renders with it.
+  async function refreshUser() {
+    if (!auth.currentUser) return;
+    await auth.currentUser.reload();
+    setCurrentUser({ ...auth.currentUser });
+  }
+
   const value = {
     currentUser,
     role,
@@ -68,6 +79,7 @@ export function AuthProvider({ children }) {
     login,
     logout,
     resetPassword,
+    refreshUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

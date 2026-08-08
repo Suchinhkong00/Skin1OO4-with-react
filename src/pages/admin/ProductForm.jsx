@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { useProducts } from "../../context/ProductsContext";
 
@@ -6,7 +6,7 @@ const emptyForm = { name: "", price: "", category: "", image: "", description: "
 
 export default function ProductForm({ product, onClose }) {
   const isEditing = Boolean(product?.id);
-  const { createProduct, updateProduct } = useProducts();
+  const { products, createProduct, updateProduct } = useProducts();
   const [form, setForm] = useState(
     isEditing
       ? {
@@ -22,12 +22,50 @@ export default function ProductForm({ product, onClose }) {
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
+  // Existing categories are read straight from real product data — the same
+  // source the Products page filter and the footer links use — so there's
+  // one single source of truth for what categories exist at all.
+  const existingCategories = useMemo(
+    () => [...new Set(products.map((p) => p.category).filter(Boolean))].sort(),
+    [products]
+  );
+
+  const [addingNewCategory, setAddingNewCategory] = useState(
+    isEditing && form.category && !existingCategories.includes(form.category)
+  );
+
+  function handleCategorySelect(e) {
+    const v = e.target.value;
+    if (v === "__new__") {
+      setAddingNewCategory(true);
+      setForm({ ...form, category: "" });
+    } else {
+      setAddingNewCategory(false);
+      setForm({ ...form, category: v });
+    }
+  }
+
   function validate() {
     const next = {};
+
     if (!form.name.trim()) next.name = "Product name is required.";
-    if (!form.price || Number(form.price) <= 0) next.price = "Enter a valid price greater than 0.";
+
+    const priceNum = Number(form.price);
+    if (form.price === "" || !Number.isFinite(priceNum) || priceNum <= 0) {
+      next.price = "Enter a valid price greater than 0.";
+    }
+
     if (!form.category.trim()) next.category = "Category is required.";
-    if (!form.image.trim()) next.image = "Image path or URL is required.";
+
+    const image = form.image.trim();
+    if (!image) {
+      next.image = "Image path or URL is required.";
+    } else if (!/^https?:\/\//i.test(image) && !image.startsWith("/") && !image.startsWith("images/")) {
+      next.image = 'Must be a full URL (https://...) or a local path (e.g. "/images/example.webp").';
+    }
+
+    if (!form.description.trim()) next.description = "Description is required.";
+
     setErrors(next);
     return Object.keys(next).length === 0;
   }
@@ -37,11 +75,12 @@ export default function ProductForm({ product, onClose }) {
     if (!validate()) return;
     setSubmitting(true);
     try {
+      const payload = { ...form, category: form.category.trim() };
       if (isEditing) {
-        await updateProduct(product.id, form);
+        await updateProduct(product.id, payload);
         toast.success("Product updated.");
       } else {
-        await createProduct(form);
+        await createProduct(payload);
         toast.success("Product created.");
       }
       onClose();
@@ -79,10 +118,30 @@ export default function ProductForm({ product, onClose }) {
             </div>
             <div className="col-6">
               <label className="form-label">Category</label>
-              <input
-                type="text" className="form-control"
-                value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}
-              />
+              {addingNewCategory ? (
+                <div className="d-flex gap-2">
+                  <input
+                    type="text" className="form-control" placeholder="New category name"
+                    value={form.category}
+                    onChange={(e) => setForm({ ...form, category: e.target.value })}
+                    autoFocus
+                  />
+                  <button
+                    type="button" className="btn btn-outline-secondary"
+                    onClick={() => { setAddingNewCategory(false); setForm({ ...form, category: "" }); }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
+                <select className="form-control" value={form.category} onChange={handleCategorySelect}>
+                  <option value="" disabled>Select a category</option>
+                  {existingCategories.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                  <option value="__new__">+ Add new category</option>
+                </select>
+              )}
               {errors.category && <div className="form-msg error mt-1">{errors.category}</div>}
             </div>
           </div>
@@ -107,6 +166,7 @@ export default function ProductForm({ product, onClose }) {
               className="form-control" rows="3"
               value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })}
             />
+            {errors.description && <div className="form-msg error mt-1">{errors.description}</div>}
           </div>
           <div className="d-flex gap-2 justify-content-end">
             <button type="button" className="btn btn-outline-secondary rounded-pill px-4" onClick={onClose}>

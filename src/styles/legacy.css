@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
 
@@ -44,6 +43,14 @@ body {
 img { max-width: 100%; }
 a   { text-decoration: none; }
 
+/* Global fixed-navbar offset — applies to every routed page, since <main>
+   in Layout.jsx wraps every page via <Outlet />. Keeping the offset here
+   (instead of on individual page wrappers like .hero-section/.page-banner)
+   means no future page can accidentally be built without it. */
+main {
+  padding-top: 70px;
+}
+
 
 /* 3. BOOTSTRAP COLOUR OVERRIDES */
 .btn-primary,
@@ -84,26 +91,93 @@ a   { text-decoration: none; }
 
 
 /*5. NAVBAR*/
+/* ===========================
+   NAVBAR
+=========================== */
+
 .navbar {
   background: #fff !important;
-  box-shadow: 0 2px 12px rgba(74, 124, 89, .10);
+  box-shadow: 0 2px 12px rgba(74, 124, 89, 0.1);
+  padding: 12px 0;
+  z-index: 1050;
+  min-height: 70px;
 }
-.navbar-brand .logo-text {
-  font-size: 1.3rem;
-  font-weight: 800;
-  color: var(--clr-text);
+
+.logo-img {
+  height: 42px;
+  width: auto;
 }
-.navbar-brand .logo-text .accent { color: var(--clr-primary); }
-.logo-img { height: 38px; width: auto; }
 
 .nav-link {
-  font-weight: 500;
   color: var(--clr-text) !important;
-  font-size: .93rem;
-  transition: color .2s;
+  font-weight: 500;
+  transition: .3s;
 }
+
 .nav-link:hover,
-.nav-link.active { color: var(--clr-primary) !important; }
+.nav-link.active {
+  color: var(--clr-primary) !important;
+}
+
+.nav-cart-link {
+  position: relative;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #dc3545;
+  color: #fff;
+  font-size: .7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.navbar-toggler {
+  border: none !important;
+  box-shadow: none !important;
+  padding: .45rem;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none !important;
+}
+
+.navbar-toggler-icon {
+  background-image: var(--bs-navbar-toggler-icon-bg) !important;
+}
+
+/* dropdown */
+
+.dropdown-toggle {
+  background: transparent;
+  border: none;
+  color: var(--clr-text);
+  font-weight: 500;
+}
+
+.dropdown-toggle:focus {
+  box-shadow: none;
+}
+
+.dropdown-menu {
+  border-radius: 12px;
+  border: 1px solid var(--clr-border);
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.dropdown-item:hover {
+  background: var(--clr-primary-l);
+  color: var(--clr-primary);
+}
+
+
 
 
 /*6. PAGE BANNER  (inner pages)*/
@@ -112,7 +186,6 @@ a   { text-decoration: none; }
   color: #fff;
   padding: 80px 0 52px;
   text-align: center;
-  margin-top: 56px;
 }
 .page-banner h1 {
   font-size: clamp(1.8rem, 4vw, 2.8rem);
@@ -142,8 +215,7 @@ a   { text-decoration: none; }
   display: flex;
   align-items: center;       
   justify-content: center;  
-  overflow: hidden;
-  margin-top: 56px;    
+  overflow: hidden;   
 
   
 
@@ -734,38 +806,36 @@ a   { text-decoration: none; }
 }
 
 /* ── Mobile (481px – 767px)  — Hero centered layout ── */
-@media (min-width: 481px) and (max-width: 767px) {
-  .hero-section {
-    min-height: 100vh;
-    padding: 100px 0 60px;
-    align-items: center;
-    justify-content: center;
+/* ===========================
+   MOBILE
+=========================== */
+
+@media (max-width:991.98px){
+
+  .navbar-collapse{
+    background:#fff;
+    margin-top:12px;
+    padding:18px;
+    border-radius:16px;
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
   }
-  .hero-content {
-    text-align: center;
-    padding: 20px 16px;
-    align-items: center;
+
+  .navbar-nav{
+    gap:10px !important;
+    align-items:flex-start !important;
   }
-  
-  .hero-title { font-size: 2rem; line-height: 1.2; }
-  .hero-sub   { font-size: .92rem; max-width: 100%; }
-  .hero-overlay { background: rgba(30, 50, 36, .70); }
-  .hero-content .d-flex { justify-content: center; flex-wrap: wrap; gap: 10px; }
 
-  .cta-box { padding: 40px 24px; border-radius: 16px; }
-
-  .about-badge { right: 0; bottom: -12px; padding: 10px 16px; }
-  .about-img   { max-height: 360px; }
-
-  .stat-card   { padding: 20px 12px; }
-
-  .footer        { padding: 40px 0 0; }
-  .footer-bottom { flex-direction: column; align-items: center; text-align: center; gap: 6px; }
-
-  .back-to-top { bottom: 20px; right: 16px; width: 40px; height: 40px; font-size: 1rem; }
-  .hero-bg img {
-    object-position: 70% center;
+  .nav-link{
+    width:100%;
+    padding:.75rem 0;
   }
+
+  .dropdown-menu{
+    border:none;
+    box-shadow:none;
+    padding-left:1rem;
+  }
+
 }
 
 /* ── Small Mobile (≤ 480px)  */
@@ -792,7 +862,7 @@ a   { text-decoration: none; }
   .hero-content .d-flex { justify-content: center; flex-direction: column; align-items: center; gap: 10px; }
   .hero-content .btn    { width: 100%; max-width: 240px; }
 
-  .page-banner  { padding: 60px 0 36px; margin-top: 56px; }
+  .page-banner  { padding: 60px 0 36px; }
   .page-banner h1 { font-size: 1.6rem; }
 
   .cta-box      { padding: 32px 16px; border-radius: 14px; }
@@ -848,4 +918,33 @@ a   { text-decoration: none; }
     }
 
   }
+
+  @media (max-width:991.98px){
+
+  .navbar-collapse{
+    background:#fff;
+    margin-top:12px;
+    padding:18px;
+    border-radius:16px;
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+  }
+
+  .navbar-nav{
+    gap:10px !important;
+    align-items:flex-start !important;
+  }
+
+  .nav-link{
+    width:100%;
+    padding:.75rem 0;
+  }
+
+  .dropdown-menu{
+    position: static;
+    border:none;
+    box-shadow:none;
+    padding-left:1rem;
+  }
+
+}
 }

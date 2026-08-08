@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { useProducts } from "../context/ProductsContext";
 import ProductCard from "../components/ProductCard";
 import SearchFilterBar from "../components/SearchFilterBar";
@@ -10,9 +10,31 @@ const PAGE_SIZE = 9;
 
 export default function Products() {
   const { products, loading } = useProducts();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(searchParams.get("category") || "");
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setCategory(searchParams.get("category") || "");
+    setPage(1);
+  }, [searchParams]);
+
+  // When arriving with a category filter already set (e.g. a footer link),
+  // scroll straight to the product grid instead of the page banner at the
+  // top. Runs after ScrollToTop's own reset-to-top effect (it's declared
+  // earlier in App.jsx's tree, so it fires first), and the rAF gives the
+  // browser one extra frame to make sure that scroll has actually applied
+  // before this one runs — otherwise the two can race and top would win.
+  useEffect(() => {
+    const cat = searchParams.get("category");
+    if (!cat) return;
+    const el = document.getElementById("product-results");
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }, [searchParams]);
 
   const categories = useMemo(
     () => [...new Set(products.map((p) => p.category).filter(Boolean))],
@@ -21,10 +43,11 @@ export default function Products() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
+    const c = category.trim().toLowerCase();
     return products.filter((p) => {
       const matchesQuery =
         !q || p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q);
-      const matchesCategory = !category || p.category === category;
+      const matchesCategory = !c || (p.category || "").trim().toLowerCase() === c;
       return matchesQuery && matchesCategory;
     });
   }, [products, query, category]);
@@ -40,6 +63,7 @@ export default function Products() {
   function updateCategory(v) {
     setCategory(v);
     setPage(1);
+    setSearchParams(v ? { category: v } : {});
   }
 
   return (
@@ -57,7 +81,7 @@ export default function Products() {
         </div>
       </div>
 
-      <section className="py-5">
+      <section className="py-5" id="product-results">
         <div className="container py-4">
           <div className="text-center mb-5">
             <span className="section-tag">Our Range</span>
