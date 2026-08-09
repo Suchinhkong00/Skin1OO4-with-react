@@ -8,6 +8,9 @@ import AdminRoute from "./components/AdminRoute";
 import PrivateRoute from "./components/PrivateRoute";
 import ScrollToTop from "./components/ScrollToTop";
 import RoleBasedHome from "./components/RoleBasedHome";
+import AdminOrders from "./pages/admin/AdminOrders";
+import AdminCustomers from "./pages/admin/AdminCustomers";
+import AdaptiveLayout from "./components/AdaptiveLayout";
 
 import About from "./pages/About";
 import WhyChooseUs from "./pages/WhyChooseUs";
@@ -54,19 +57,23 @@ export default function App() {
               </PrivateRoute>
             }
           />
-          <Route
-            path="/profile"
-            element={
-              <PrivateRoute>
-                <Profile />
-              </PrivateRoute>
-            }
-          />
+          
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="*" element={<NotFound />} />
         </Route>
+        {/* Shared page — layout adapts to role */}
+          <Route element={<AdaptiveLayout />}>
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              }
+            />
+          </Route>
 
         {/* Admin area — separate shell, no public Footer */}
         <Route element={<AdminLayout />}>
@@ -75,6 +82,22 @@ export default function App() {
             element={
               <AdminRoute>
                 <AdminDashboard />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/orders"
+            element={
+              <AdminRoute>
+                <AdminOrders />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/customers"
+            element={
+              <AdminRoute>
+                <AdminCustomers />
               </AdminRoute>
             }
           />

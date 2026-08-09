@@ -947,4 +947,66 @@ main {
   }
 
 }
+/* Admin navbar: visually separate account (Profile/Logout) from management links */
+.admin-brand-tag {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--clr-primary);
+  background: var(--clr-primary-l);
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.admin-nav-account {
+  margin-left: 8px;
+  padding-left: 16px;
+  border-left: 1px solid var(--clr-border);
+}
+
+@media (max-width: 991.98px) {
+  .admin-nav-account {
+    border-left: none;
+    border-top: 1px solid var(--clr-border);
+    margin-left: 0;
+    padding-left: 0;
+    padding-top: 12px;
+    margin-top: 8px;
+    width: 100%;
+  }
+}
+
+/* ADMIN STAT CARDS */
+.admin-stat-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 22px 20px;
+  box-shadow: 0 4px 20px rgba(74, 124, 89, .08);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.admin-stat-card .stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--clr-primary-l);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--clr-primary);
+  font-size: 1.15rem;
+}
+.admin-stat-card .stat-value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--clr-text);
+}
+.admin-stat-card .stat-caption {
+  font-size: .8rem;
+  color: var(--clr-text-m);
+  font-weight: 600;
+}
 }
