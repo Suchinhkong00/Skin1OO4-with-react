@@ -53,22 +53,27 @@ export default function AdminNavbar() {
           <ul className="navbar-nav ms-auto gap-1 align-items-lg-center">
             <li className="nav-item">
               <NavLink className={linkClass} to="/admin" end onClick={closeMenu}>
-                <i className="ri-price-tag-3-line me-1"></i> Products
+                <i></i> Dashboard
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className={linkClass} to="/admin/products" onClick={closeMenu}>
+                <i ></i> Products
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink className={linkClass} to="/admin/orders" onClick={closeMenu}>
-                <i className="ri-file-list-3-line me-1"></i> Orders
+                <i></i> Orders
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink className={linkClass} to="/admin/messages" onClick={closeMenu}>
-                <i className="ri-mail-line me-1"></i> Messages
+                <i ></i> Messages
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink className={linkClass} to="/admin/customers" onClick={closeMenu}>
-                <i className="ri-group-line me-1"></i> Customers
+                <i ></i> Customers
               </NavLink>
             </li>
 

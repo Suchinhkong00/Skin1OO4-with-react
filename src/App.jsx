@@ -11,6 +11,7 @@ import RoleBasedHome from "./components/RoleBasedHome";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminCustomers from "./pages/admin/AdminCustomers";
 import AdaptiveLayout from "./components/AdaptiveLayout";
+import AdminOverview from "./pages/admin/AdminOverview";
 
 import About from "./pages/About";
 import WhyChooseUs from "./pages/WhyChooseUs";
@@ -79,6 +80,14 @@ export default function App() {
         <Route element={<AdminLayout />}>
           <Route
             path="/admin"
+            element={
+              <AdminRoute>
+                <AdminOverview />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/products"
             element={
               <AdminRoute>
                 <AdminDashboard />
